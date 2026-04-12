@@ -52,7 +52,6 @@
         border: 4px solid #b87c4b;
         border-radius: 50%;
       }
-      /* ニックネーム部分のスタイル */
       .nickname {
         font-size: 18px;
         color: #8b4513;
@@ -61,60 +60,69 @@
         margin-bottom: 12px;
         font-weight: normal;
       }
-      /* 願い事部分のスタイル */
       .wish {
         font-size: 32px;
         font-weight: bold;
         line-height: 1.4;
       }
-      .footer {
-        margin-top: 40px;
-        font-size: 18px;
-        color: #e6cba0;
-      }
-      /* データがないときのプレースホルダー */
       .placeholder-card {
         display: flex;
         align-items: center;
         justify-content: center;
       }
+      .custom-footer {
+        margin-top: 50px;
+        padding: 25px 0 15px;
+        text-align: center;
+        color: #e6cba0;
+        font-size: 15px;
+        border-top: 1px dashed #b87c4b;
+      }
+      .footer-links a {
+        color: #f0e6d2;
+        text-decoration: none;
+        margin: 0 10px;
+      }
+      .footer-links a:hover {
+        color: #ffd700;
+        text-decoration: underline;
+      }
+      .footer-copyright {
+        color: #c4a882;
+        font-size: 14px;
+        margin-top: 8px;
+      }
     </style>
   </head>
   <body>
-    <h1>⛩️ デジタル絵馬 ⛩️</h1>
+    <h1>デジタル絵馬</h1>
     <div class="ema-grid" id="emaGrid">
-      <!-- JavaScriptで絵馬が動的に追加されます -->
       <div class="ema-card placeholder-card">
         <div style="font-size: 20px; color: #5a3e2b;">願い事を待っています…</div>
       </div>
     </div>
-    <div class="footer">奉納いただいた願い事がここに表示されます</div>
 
     <script>
       function updateEma() {
         google.script.run.withSuccessHandler(function(wishes) {
           const grid = document.getElementById('emaGrid');
-          grid.innerHTML = ''; // 一旦クリア
+          grid.innerHTML = '';
 
-          // 願い事が1件もない場合の表示
           if (wishes.length === 0) {
             grid.innerHTML = '<div class="ema-card placeholder-card"><div style="font-size: 20px; color: #5a3e2b;">願い事を待っています…</div></div>';
             return;
           }
 
-          // 最大6件まで表示（3列×2行のグリッドに合わせて）
           const displayWishes = wishes.slice(0, 6);
 
           displayWishes.forEach(function(item) {
             const card = document.createElement('div');
             card.className = 'ema-card';
 
-            // ニックネーム部分
             const nicknameDiv = document.createElement('div');
             nicknameDiv.className = 'nickname';
             nicknameDiv.textContent = item.nickname + ' さんの願い';
 
-            // 願い事部分
             const wishDiv = document.createElement('div');
             wishDiv.className = 'wish';
             wishDiv.textContent = item.wish;
@@ -124,8 +132,6 @@
             grid.appendChild(card);
           });
 
-          // 表示件数が6件未満の場合、空の絵馬カードを追加して見た目を整える（任意）
-          // 必要なければこの部分は削除してもOKです
           const remainingSlots = 6 - displayWishes.length;
           for (let i = 0; i < remainingSlots; i++) {
             const emptyCard = document.createElement('div');
@@ -137,20 +143,19 @@
         }).getLatestWishes();
       }
 
-      // 初回読み込み
       updateEma();
-      // 10秒ごとに更新
-      setInterval(updateEma, 10000);
+      setInterval(updateEma, 20000);
     </script>
+
     <footer class="custom-footer">
-  <div class="footer-links">
-    <a href="https://github.com/..." target="_blank">GitHub</a> /
-    <a href="https://note.com/..." target="_blank">note</a> /
-    <a href="https://..." target="_blank">テクニカルサマリー</a>
-  </div>
-  <div class="footer-copyright">
-    © 2026 Shimataiyaki
-  </div>
-</footer>
+      <div class="footer-links">
+        <a href="https://github.com/shimataiyaki/digital-ema" target="_blank">GitHub</a> /
+        <a href="https://note.com/shimataiyaki" target="_blank">note</a> /
+        <a href="https://github.com/shimataiyaki/digital-ema#readme" target="_blank">テクニカルサマリー</a>
+      </div>
+      <div class="footer-copyright">
+        © 2026 Shimataiyaki
+      </div>
+    </footer>
   </body>
 </html>
