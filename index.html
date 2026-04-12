@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      body {
+        background-color: #4a2c1b;
+        background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png');
+        font-family: '游明朝', 'Yu Mincho', serif;
+        color: #f0e6d2;
+        text-align: center;
+        padding: 20px;
+        margin: 0;
+      }
+      h1 {
+        font-size: 48px;
+        margin: 10px 0 30px;
+        text-shadow: 4px 4px 0 #2b1a0f;
+        letter-spacing: 5px;
+      }
+      .ema-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 10px;
+      }
+      .ema-card {
+        background-color: #fcf3e0;
+        color: #2b1a0f;
+        min-height: 240px;
+        border: 6px solid #b87c4b;
+        border-radius: 20px 20px 8px 8px;
+        box-shadow: 10px 10px 0 #2b1a0f;
+        padding: 30px 15px 20px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        word-break: break-word;
+      }
+      .ema-card::before {
+        content: "";
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 30px;
+        height: 30px;
+        background-color: #d4a373;
+        border: 4px solid #b87c4b;
+        border-radius: 50%;
+      }
+      /* ニックネーム部分のスタイル */
+      .nickname {
+        font-size: 18px;
+        color: #8b4513;
+        border-bottom: 2px dashed #d4a373;
+        padding-bottom: 8px;
+        margin-bottom: 12px;
+        font-weight: normal;
+      }
+      /* 願い事部分のスタイル */
+      .wish {
+        font-size: 32px;
+        font-weight: bold;
+        line-height: 1.4;
+      }
+      .footer {
+        margin-top: 40px;
+        font-size: 18px;
+        color: #e6cba0;
+      }
+      /* データがないときのプレースホルダー */
+      .placeholder-card {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>⛩️ デジタル絵馬 ⛩️</h1>
+    <div class="ema-grid" id="emaGrid">
+      <!-- JavaScriptで絵馬が動的に追加されます -->
+      <div class="ema-card placeholder-card">
+        <div style="font-size: 20px; color: #5a3e2b;">願い事を待っています…</div>
+      </div>
+    </div>
+    <div class="footer">奉納いただいた願い事がここに表示されます</div>
+
+    <script>
+      function updateEma() {
+        google.script.run.withSuccessHandler(function(wishes) {
+          const grid = document.getElementById('emaGrid');
+          grid.innerHTML = ''; // 一旦クリア
+
+          // 願い事が1件もない場合の表示
+          if (wishes.length === 0) {
+            grid.innerHTML = '<div class="ema-card placeholder-card"><div style="font-size: 20px; color: #5a3e2b;">願い事を待っています…</div></div>';
+            return;
+          }
+
+          // 最大6件まで表示（3列×2行のグリッドに合わせて）
+          const displayWishes = wishes.slice(0, 6);
+
+          displayWishes.forEach(function(item) {
+            const card = document.createElement('div');
+            card.className = 'ema-card';
+
+            // ニックネーム部分
+            const nicknameDiv = document.createElement('div');
+            nicknameDiv.className = 'nickname';
+            nicknameDiv.textContent = item.nickname + ' さんの願い';
+
+            // 願い事部分
+            const wishDiv = document.createElement('div');
+            wishDiv.className = 'wish';
+            wishDiv.textContent = item.wish;
+
+            card.appendChild(nicknameDiv);
+            card.appendChild(wishDiv);
+            grid.appendChild(card);
+          });
+
+          // 表示件数が6件未満の場合、空の絵馬カードを追加して見た目を整える（任意）
+          // 必要なければこの部分は削除してもOKです
+          const remainingSlots = 6 - displayWishes.length;
+          for (let i = 0; i < remainingSlots; i++) {
+            const emptyCard = document.createElement('div');
+            emptyCard.className = 'ema-card placeholder-card';
+            emptyCard.style.opacity = '0.5';
+            emptyCard.innerHTML = '<div style="font-size: 18px; color: #8b7355;">次の願い事をお待ちしています</div>';
+            grid.appendChild(emptyCard);
+          }
+        }).getLatestWishes();
+      }
+
+      // 初回読み込み
+      updateEma();
+      // 10秒ごとに更新
+      setInterval(updateEma, 10000);
+    </script>
+  </body>
+</html>
