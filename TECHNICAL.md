@@ -2,7 +2,7 @@
 
 ## 1. 概要
 - **プロダクト名**：デジタル絵馬 (digital-ema)
-- **公開URL**：【GAS】
+- **公開URL**：【https://script.google.com/a/macros/seisei-edu.jp/s/AKfycbzfW32VnrVEP8G0kaJj4rB1shHH12U2lxwfNG-LLs_ZRFSH8LibAie7E_dhk3t08TdA7w/exec】
 - **リポジトリ**：【https://github.com/shimataiyaki/digital-ema】
 - **技術スタック**：Google Apps Script (GAS), Google Spreadsheet, Google Forms, HTML/CSS/JavaScript (ES6)
 
