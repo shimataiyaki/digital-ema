@@ -3,8 +3,8 @@
 ## 1. 概要
 - **作品名**：デジタル絵馬
 - **制作時期**：2026年4月
-- **公開URL**：【https://script.google.com/a/macros/seisei-edu.jp/s/AKfycbzfW32VnrVEP8G0kaJj4rB1shHH12U2lxwfNG-LLs_ZRFSH8LibAie7E_dhk3t08TdA7w/exec】
-- **リポジトリ**：【https://github.com/shimataiyaki/digital-ema】
+- **公開URL**：【https://script.google.com/a/macros/seisei-edu.jp/s/AKfycbzfW32VnrVEP8G0kaJj4rB1shHH12U2lxwfNG-LLs_ZRFSH8LibAie7E_dhk3t08TdA7w/exec 】
+- **リポジトリ**：【https://github.com/shimataiyaki/digital-ema 】
 
 ## 2. 開発経緯
 
