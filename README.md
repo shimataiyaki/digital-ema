@@ -1,69 +1,66 @@
-# デジタル絵馬 テクニカルサマリー
+# digital-ema Technical Summary
 
-## 1. 概要
-- **作品名**：デジタル絵馬
-- **制作時期**：2026年4月
-- **公開URL**：【https://script.google.com/a/macros/seisei-edu.jp/s/AKfycbzfW32VnrVEP8G0kaJj4rB1shHH12U2lxwfNG-LLs_ZRFSH8LibAie7E_dhk3t08TdA7w/exec 】
-- **リポジトリ**：【https://github.com/shimataiyaki/digital-ema 】
+## 1. Overview
+- **Title**: digital-ema
+- **Production Date**: April 2026
+- **Public URL**: [https://script.google.com/a/macros/seisei-edu.jp/s/AKfycbzfW32VnrVEP8G0kaJj4rB1shHH12U2lxwfNG-LLs_ZRFSH8LibAie7E_dhk3t08TdA7w/exec]
+- **Repository**: [https://github.com/shimataiyaki/digital-ema ]
 
-## 2. 開発経緯
+## 2. Development Background
 
-### 2.1 着想と位置づけ
-- 高校文化祭で「神社」をテーマにした部活動展示を行うにあたり、**「参拝者が自分の願い事を奉納し、それをリアルタイムに共有できる体験」**を目指して開発し、部活動に提供。
-- 既存の紙絵馬とは異なり、**デジタルならではの即時性・共有性**を重視し、大型モニターを活用したインスタレーションとして構想。
-- Googleサービスを活用することで、特別なサーバー構築を不要とする設計を採用。
+### 2.1 Concept and Purpose
+- Developed and provided to a club for a high school cultural festival exhibition themed around “Shinto shrines,” with the goal of creating **“an experience where visitors can offer their own wishes and share them in real time.”**
+- Unlike traditional paper ema, the project emphasized **the immediacy and shareability unique to digital media** and was conceived as an installation utilizing large monitors.
+- By leveraging Google services, we adopted a design that eliminates the need for building a dedicated server.
 
-### 2.2 プロトタイピングの変遷
-- **構想段階**：「Googleスプレッドシート直接表示」による簡易デジタル絵馬を検討。リアルタイム性とデザイン性に課題。
-- **v1（GASウェブアプリ版）**：Google Apps Scriptを用いた動的表示システムを構築。絵馬カードのデザインと自動更新機能を実装。
-- **v2（ニックネーム対応版）**：フォームにニックネーム欄を追加し、「○○さんの願い」として表示する機能を追加。絵馬のパーソナライズ性が向上。
-- **v3（運用最適化版）**：更新間隔を20秒に調整し、GASの実行制限（90分/日）に対する余裕を確保。フッターにクレジット・リンクを追加し、プロダクトとしての完成度を高めた。
-- **v4~6**:べータ版開発のための実験仕様
-- **v7 (ベータ版)**:クライアントの要望に答えるべく、全投稿を表示するアーカイブを作成、同時表示の枚数を20枚に拡大。投稿をリアルタイムで通知する機能を搭載。
+### 2.2 Prototyping Evolution
+- **Conceptual Phase**: Considered a simple digital ema using “direct Google Spreadsheet display.” Faced challenges with real-time functionality and design.
+- **v1 (GAS Web App Version)**: Built a dynamic display system using Google Apps Script. Implemented ema card designs and automatic update functionality.
+- **v2 (Nickname Support Version)**: Added a nickname field to the form and implemented a feature to display wishes as “○○'s Wish.” This improved the personalization of the ema.
+- **v3 (Operational Optimization Version)**: Adjusted the refresh interval to 20 seconds to ensure sufficient buffer against GAS execution limits (90 minutes/day). Added credits and links to the footer, enhancing the product’s polish.
+- **v4–6**: Experimental specifications for beta development
+- **v7 (Beta)**: To meet client requests, created an archive displaying all posts and expanded the number of posts displayed simultaneously to 20. Added a feature to notify users of new posts in real time.
 
-## 3. 使用技術
-- **フロントエンド**：HTML5, CSS3, JavaScript (ES6)
-- **バックエンド**：Google Apps Script (GAS)
-- **データベース**：Google スプレッドシート
-- **フォーム**：Google フォーム
-- **ホスティング**：GAS ウェブアプリ
-- **エディタ**：Google Apps Script エディタ / Cursor (AI支援開発)
+## 3. Technologies Used
+- **Frontend**: HTML5, CSS3, JavaScript (ES6)
+- **Backend**: Google Apps Script (GAS)
+- **Database**: Google Sheets
+- **Forms**: Google Forms
+- **Hosting**: GAS Web App
+- **Editor**: Google Apps Script Editor / Cursor (AI-assisted development)
 
-## 4. システム構成図
+## 4. System Architecture Diagram
 
-[Chromebook（フォーム入力）] → [Googleフォーム] → [スプレッドシート（自動蓄積）]
+[Chromebook (form input)] → [Google Forms] → [Spreadsheet (automatic accumulation)]
                                                               ↓
-[大型モニター（PC接続）] ← [GASウェブアプリ（絵馬表示）] ← [GAS（データ取得）]
+[Large monitor (connected to PC)] ← [GAS Web App (ema display)] ← [GAS (data retrieval)]
 
-## 5. 技術解説
+## 5. Technical Explanation
 
-### 5.1 開発プロセスと学び
-- **AI支援開発の実践**：本作品は、AIとの対話を通じて要件整理・コード生成・デバッグを行うスタイルで制作した。これにより、プログラミング初学者でも短期間で実用的なWebアプリを完成させられることを実証。
-- **ノーコード／ローコードの活用**：Googleフォームとスプレッドシートの連携部分はノーコードで実現し、表示ロジックのみにGASを用いることで、開発工数を大幅に削減した。
+### 5.1 Development Process and Lessons Learned
+- **Practical AI-Assisted Development**: This project was created using a style that involves clarifying requirements, generating code, and debugging through interaction with AI. This demonstrated that even programming beginners can complete a practical web app in a short period of time.
+- **Utilizing No-Code/Low-Code Solutions**: The integration between Google Forms and Spreadsheets was implemented using no-code tools, and by using GAS solely for the display logic, we significantly reduced development effort.
 
-### 5.2 データフローと更新ロジック
-- **フォーム送信 → スプレッドシート**：Googleフォームの標準機能により、回答はリアルタイムにスプレッドシートへ追加される。
-- **GASによるデータ取得**：`getLatestWishes()` 関数がスプレッドシートの最新6件を取得し、JSON形式でフロントエンドに返却。
-- **自動更新**：JavaScriptの `setInterval()` を用いて20秒ごとにデータを再取得し、DOMを差分更新する設計。GASの実行時間制限（90分/日）を考慮し、更新頻度を最適化。
+### 5.2 Data Flow and Update Logic
+- **Form Submission → Spreadsheet**: Using Google Forms’ standard features, responses are added to the spreadsheet in real time.
+- **Data Retrieval via GAS**: The `getLatestWishes()` function retrieves the latest 6 entries from the spreadsheet and returns them to the frontend in JSON format.
+- **Automatic Updates**: Designed to re-fetch data every 20 seconds using JavaScript’s `setInterval()` and update the DOM incrementally. Update frequency is optimized to account for GAS’s execution time limit (90 minutes per day).
 
-### 5.3 UI/UX（絵馬のビジュアル表現）
-- **絵馬カードのデザイン**：CSSので絵馬を再現。`::before` 疑似要素で上部の「穴」と「紐」を表現し、`box-shadow` で立体感を演出。
-- **縦書き対応（オプション）**：`writing-mode: vertical-rl` を追加することで、より本格的な絵馬表示が可能。
-- **レスポンシブ対応**：CSS Gridを用いて、画面サイズに応じて絵馬カードが折り返す設計。大型モニターでの全画面表示を前提としつつ、スマートフォンからの確認にも対応。
+### 5.3 UI/UX (Visual Representation of Ema)
+- **Ema Card Design**: Ema are recreated using CSS. The `::before` pseudo-element is used to represent the “hole” and “string” at the top, and `box-shadow` is used to create a three-dimensional effect.
+- **Vertical Writing Support (Optional)**: Adding `writing-mode: vertical-rl` enables a more authentic ema display.
+- **Responsive Design**: Using CSS Grid, the ema card is designed to wrap based on screen size. While designed for full-screen display on large monitors, it also supports viewing on smartphones.
 
-### 5.4 運用設計
-- **学校ICT環境への適合**：Chromebookからのフォーム入力、管理用PCでの全画面表示（F11）を想定。学校のGoogleアカウントで動作するため、外部サービスへの依存が最小限。
-- **イタズラ対策**：フォームURLは非公開（リンクを知っている人のみ）に設定し、不特定多数からの投稿を防止。
-- **更新反映の柔軟性**：コード修正後、GASの「デプロイを管理」→「新バージョン」を選択することで、**URLを変更せずに**アプリを更新可能。本番当日の急な修正にも対応できる。
+### 5.4 Operational Design
+- **Compatibility with School ICT Environments**: As a web application, no special software or apps need to be installed, and it can be accessed from school Chromebooks.
+- **Vandalism Prevention**: The form URL is set to private (accessible only to those who know the link) to prevent submissions from the general public.
 
-## 6. 開発中の課題と解決策
+## 6. Development Challenges and Solutions
 
-| 課題 | 解決策 |
+| Challenge | Solution |
 |:---|:---|
-| GASの実行時間制限（90分/日） | 更新間隔を20秒に設定し、6時間営業でも消費時間が約36分に収まるよう設計。手動リロードによるフォールバックも可能。 |
-| ネットワーク負荷 | GASウェブアプリはHTML/CSS/JSを配信するのみで、データ通信は最小限。文化祭当日のWi-Fi環境でも安定動作が期待できる。 |
+| GAS Execution Time Limit (90 minutes/day) | Designed with a 20-second refresh interval to ensure total execution time remains within approximately 36 minutes, even during a 6-hour operation. Manual reloading is also available as a fallback. |
+| Network Load | The GAS web app only delivers HTML/CSS/JS, keeping data transmission to a minimum. Stable operation is expected even under the Wi-Fi conditions on the day of the cultural festival. |
 
-## 7. 今後の展望
-- 実際の文化祭展示を通じて、参拝者の反応や運用上の課題（待機時間の体感、絵馬の表示件数など）を収集し、改善を図る予定。
-- 「二進数おみくじ」  [https://github.com/shimataiyaki/binary-omikuji] との連携強化（おみくじ結果を絵馬に反映する機能など）を検討。
-- 願い事データの簡易分析（ワードクラウド表示など）による展示の振り返り機能。
+## 7. Future Outlook
+- Through the actual cultural festival exhibition, we plan to collect visitor feedback and identify operational challenges (such as perceived wait times and the number of ema displayed) to implement improvements.
