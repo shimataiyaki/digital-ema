@@ -102,4 +102,6 @@ MIT License
 Shimataiyaki
 - [GitHub](https://github.com/Shimataiyaki)
 - [note](https://note.com/shimataiyaki)
+
+
 © 2026 Shimataiyaki
