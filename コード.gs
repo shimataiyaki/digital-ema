@@ -1,3 +1,6 @@
+// ★★★ ご自身のスプレッドシートIDに置き換えてください ★★★
+var SPREADSHEET_ID = 'YOUR_SPREADSHEET_ID_HERE';
+
 // ウェブアプリのエントリポイント（URLパラメータで出し分け）
 function doGet(e) {
   var page = e.parameter.page;
@@ -13,7 +16,7 @@ function doGet(e) {
         .addMetaTag('viewport', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes');
   }
 
-  return htmlOutput;
+  return htmlOutput.setFaviconUrl('https://shimataiyaki.github.io/images/favicon.ico');
 }
 
 // タイムスタンプが今日かどうかを判定
@@ -26,9 +29,9 @@ function isToday(timestamp) {
          date.getDate() === today.getDate();
 }
 
-// ランダムに最大15件の願い事を取得（今日のデータのみ）
+// ランダムに最大15件の想いを取得（今日のデータのみ）
 function getRandomWishes() {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var sheet = SpreadsheetApp.openById(SPREADSHEET_ID).getActiveSheet();
   var lastRow = sheet.getLastRow();
   if (lastRow < 2) return [];
 
@@ -63,7 +66,7 @@ function getRandomWishes() {
 
 // 直近30秒以内に奉納されたニックネームを最大5件返す（今日のデータのみ）
 function getRecentNicknames() {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var sheet = SpreadsheetApp.openById(SPREADSHEET_ID).getActiveSheet();
   var lastRow = sheet.getLastRow();
   if (lastRow < 2) return [];
 
@@ -95,7 +98,7 @@ function getRecentNicknames() {
 
 // 全件取得（アーカイブ画面用・全日程・時系列順）
 function getAllWishes() {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var sheet = SpreadsheetApp.openById(SPREADSHEET_ID).getActiveSheet();
   var lastRow = sheet.getLastRow();
   if (lastRow < 2) return [];
 
@@ -113,7 +116,5 @@ function getAllWishes() {
       });
     }
   }
-
-  // 時系列順（古い順）のまま返す（スプレッドシートの上から順）
   return wishes;
 }
