@@ -166,13 +166,13 @@ h1 {
   color: var(--accent-color);
 }
 
-/* ===== 絵馬グリッド（メインサイトと完全同一）===== */
+/* ===== 絵馬グリッド（横スクロール防止）===== */
 .ema-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-auto-rows: 1fr;
   gap: 20px;
-  max-width: 1800px;
+  max-width: 100%; /* グリッド全体の幅を画面に収める */
   margin: 20px auto;
   padding: 0 20px;
   flex: 1;
@@ -227,7 +227,6 @@ h1 {
   white-space: normal;
 }
 
-/* アーカイブ用のタイムスタンプ（メインにない要素） */
 .ema-time {
   font-size: clamp(11px, 1.5vw, 14px);
   color: var(--muted-text);
@@ -235,7 +234,6 @@ h1 {
   padding-top: 4px;
 }
 
-/* 空のメッセージ */
 .empty-message {
   text-align: center;
   font-size: 1.2rem;
