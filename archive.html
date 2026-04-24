@@ -6,8 +6,16 @@
   <title>奉納アーカイブ｜デジタル絵馬</title>
   <!-- 共通CSS：tech-shrineの共通デザインシステム -->
   <link rel="stylesheet" href="https://shimataiyaki.github.io/tech-shrine/css/common.css">
+  <!-- ファビコン -->
+  <link rel="icon" type="image/x-icon" href="https://shimataiyaki.github.io/images/favicon.ico">
   <style>
     /* ===== 絵馬カード固有のスタイル ===== */
+    .archive-container {
+      width: 100%;
+      flex: 1;
+      padding: 1.5rem;
+    }
+
     .ema-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -45,6 +53,7 @@
       margin-bottom: 8px;
       border-bottom: 1px solid var(--accent-color);
       max-width: 100%;
+      overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
@@ -56,6 +65,8 @@
       background: transparent;
       padding: 0;
       max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
       display: -webkit-box;
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
@@ -75,6 +86,29 @@
       color: var(--muted-text);
       padding: 3rem;
       grid-column: span 5;
+    }
+
+    /* バナー */
+    .notification-banner {
+      background: transparent;
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.75rem 1.5rem;
+      margin: 1rem 1.5rem 0;
+      font-size: 1rem;
+      color: var(--text-color);
+      max-width: 1600px;
+      margin-left: auto;
+      margin-right: auto;
+      width: calc(100% - 3rem);
+    }
+
+    h1 {
+      font-family: '游明朝', serif;
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 500;
+      text-align: center;
+      margin: 1.2rem 0 1.5rem;
+      color: var(--accent-color);
     }
 
     /* ===== レスポンシブ ===== */
@@ -104,7 +138,7 @@
     </button>
     <ul class="nav-menu" id="navMenu">
       <div class="nav-menu-inner">
-        <li><a href="https://script.google.com/macros/s/AKfycbxdlsuwqo6uX8n_-zbYv-JFreS0w0w720FUxshtGNazav_4nxqUvAKTm-sEsK2NLw1ieQ/exec">トップ</a></li>
+        <li><a href="YOUR_E-MAS_MAIN_URL">トップ</a></li>
         <li><a href="https://note.com/shimataiyaki" target="_blank" rel="noopener">note</a></li>
         <li><a href="https://github.com/shimataiyaki/e-mas" target="_blank" rel="noopener">GitHub</a></li>
       </div>
@@ -141,8 +175,8 @@
     }
   });
 
-  // ===== データ取得と表示 =====
-  const API_URL = 'https://script.google.com/macros/s/AKfycbwi0NXAZ_doCj7I7KuU0hk4wO65m4XcuGXotM795E1sXNjs5yC_HwxbEG4bemgzfd1a/exec'; // ★★★ デプロイ済みのGAS APIのURLに置き換えてください ★★★
+  // ===== データ取得と表示（JSONP）=====
+  const API_URL = 'YOUR_GAS_API_URL'; // ★★★ デプロイ済みのGAS APIのURLに置き換えてください ★★★
 
   function formatDate(timestamp) {
     const d = new Date(timestamp);
@@ -150,49 +184,45 @@
     return `${d.getMonth()+1}/${d.getDate()} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`;
   }
 
-  async function loadArchive() {
-    try {
-      const response = await fetch(API_URL);
-      if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
-      const allWishes = await response.json();
-      const grid = document.getElementById('archiveGrid');
-      
-      if (!allWishes || allWishes.length === 0) {
-        if (grid.children.length === 0) {
-          grid.innerHTML = '<div class="empty-message">まだ奉納された想いはありません。</div>';
-        }
-        return;
-      }
+  function handleArchiveData(allWishes) {
+    const grid = document.getElementById('archiveGrid');
+    grid.innerHTML = '';
 
-      grid.innerHTML = '';
-      allWishes.forEach(item => {
-        const card = document.createElement('div');
-        card.className = 'ema-card';
-
-        const nicknameDiv = document.createElement('div');
-        nicknameDiv.className = 'nickname';
-        nicknameDiv.textContent = (item.nickname || '匿名') + ' さんの想い';
-
-        const wishDiv = document.createElement('div');
-        wishDiv.className = 'wish';
-        wishDiv.textContent = item.wish;
-
-        const timeP = document.createElement('p');
-        timeP.className = 'ema-time';
-        timeP.textContent = formatDate(item.timestamp);
-
-        card.appendChild(nicknameDiv);
-        card.appendChild(wishDiv);
-        card.appendChild(timeP);
-        grid.appendChild(card);
-      });
-    } catch (error) {
-      console.error('アーカイブ読み込みエラー:', error);
-      const grid = document.getElementById('archiveGrid');
-      if (grid.children.length === 0) {
-        grid.innerHTML = '<div class="empty-message">データの読み込みに失敗しました</div>';
-      }
+    if (!allWishes || allWishes.length === 0) {
+      grid.innerHTML = '<div class="empty-message">まだ奉納された想いはありません。</div>';
+      return;
     }
+
+    allWishes.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'ema-card';
+
+      const nicknameDiv = document.createElement('div');
+      nicknameDiv.className = 'nickname';
+      nicknameDiv.textContent = (item.nickname || '匿名') + ' さんの想い';
+
+      const wishDiv = document.createElement('div');
+      wishDiv.className = 'wish';
+      wishDiv.textContent = item.wish;
+
+      const timeP = document.createElement('p');
+      timeP.className = 'ema-time';
+      timeP.textContent = formatDate(item.timestamp);
+
+      card.appendChild(nicknameDiv);
+      card.appendChild(wishDiv);
+      card.appendChild(timeP);
+      grid.appendChild(card);
+    });
+  }
+
+  function loadArchive() {
+    // JSONPでデータを取得
+    const script = document.createElement('script');
+    script.src = API_URL + '?callback=handleArchiveData';
+    document.body.appendChild(script);
+    // 古いスクリプトタグを削除（大量に増えるのを防ぐ）
+    setTimeout(() => script.remove(), 1000);
   }
 
   loadArchive();
