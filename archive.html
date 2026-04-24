@@ -4,131 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
   <title>奉納アーカイブ｜デジタル絵馬</title>
-  <!-- 共通CSS：tech-shrineの共通デザインシステム -->
-  <link rel="stylesheet" href="https://shimataiyaki.github.io/tech-shrine/css/common.css">
+  <!-- 同リポジトリ内のCSS -->
+  <link rel="stylesheet" href="style.css">
   <!-- ファビコン -->
   <link rel="icon" type="image/x-icon" href="https://shimataiyaki.github.io/images/favicon.ico">
-  <style>
-    /* ===== 絵馬カード固有のスタイル ===== */
-    .archive-container {
-      width: 100%;
-      flex: 1;
-      padding: 1.5rem;
-    }
-
-    .ema-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 1.5rem;
-      max-width: 1800px;
-      margin: 20px auto;
-      padding: 0 20px;
-    }
-
-    .ema-card {
-      background-color: transparent;
-      background-image: url('https://shimataiyaki.github.io/images/ema-card.jpg');
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: top center;
-      border: none;
-      box-shadow: none;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 16px 12px;
-      color: var(--text-color);
-      width: 100%;
-      aspect-ratio: 3 / 2;
-      overflow: hidden;
-    }
-
-    .nickname {
-      font-size: clamp(12px, 2vw, 16px);
-      color: var(--accent-color);
-      background: transparent;
-      padding: 0;
-      margin-bottom: 8px;
-      border-bottom: 1px solid var(--accent-color);
-      max-width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .wish {
-      font-size: clamp(18px, 2.5vw, 26px);
-      font-weight: 600;
-      line-height: 1.3;
-      background: transparent;
-      padding: 0;
-      max-width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      white-space: normal;
-      margin-bottom: 0.5rem;
-    }
-
-    .ema-time {
-      font-size: clamp(11px, 1.5vw, 14px);
-      color: var(--muted-text);
-      margin-top: auto;
-    }
-
-    .empty-message {
-      text-align: center;
-      font-size: 1.2rem;
-      color: var(--muted-text);
-      padding: 3rem;
-      grid-column: span 5;
-    }
-
-    /* バナー */
-    .notification-banner {
-      background: transparent;
-      border-bottom: 1px solid var(--border-color);
-      padding: 0.75rem 1.5rem;
-      margin: 1rem 1.5rem 0;
-      font-size: 1rem;
-      color: var(--text-color);
-      max-width: 1600px;
-      margin-left: auto;
-      margin-right: auto;
-      width: calc(100% - 3rem);
-    }
-
-    h1 {
-      font-family: '游明朝', serif;
-      font-size: clamp(1.6rem, 4vw, 2.2rem);
-      font-weight: 500;
-      text-align: center;
-      margin: 1.2rem 0 1.5rem;
-      color: var(--accent-color);
-    }
-
-    /* ===== レスポンシブ ===== */
-    @media screen and (max-width: 600px) {
-      .ema-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
-      }
-      .nickname { font-size: 16px; }
-      .wish { font-size: 22px; -webkit-line-clamp: 4; }
-      .ema-card { padding: 12px 8px; }
-    }
-  </style>
 </head>
 <body>
 
 <header class="site-header">
   <div class="header-container">
     <div class="site-title-wrapper">
-      <a href="./" class="site-title">デジタル絵馬</a>
+      <a href="./" class="site-title">奉納アーカイブ</a>
       <span class="site-subtitle">E-MAs-archive</span>
     </div>
     <button class="menu-toggle" id="menuToggle" aria-label="メニュー" aria-expanded="false">
@@ -149,7 +35,6 @@
 <div class="notification-banner">過去の想いを一覧でご覧いただけます</div>
 
 <main class="archive-container">
-  <h1>奉納アーカイブ</h1>
   <div class="ema-grid" id="archiveGrid"></div>
 </main>
 
@@ -176,11 +61,10 @@
   });
 
   // ===== データ取得と表示（JSONP）=====
-  const API_URL = 'https://script.googleusercontent.com/macros/echo?user_content_key=AWDtjMWn6CpPO64SZIdsECEtNDkMLMLqjLnJJWI-FLlSX1X5wROY1HMaBDIOuaXbAwzxF55GyQxnjGh0gswvlT1kbYDNwWfThlUMPSEjDVtSXGWcMbbgWpQEFvXqxZ1nvfWXRp-EyR2UEXI5R39g9L_dTnSDScs3pyg9O79mJpxeb_ma_tL-4CiTwL6Chp1HO1ezwD7-AR0NTQ8CQ58jRHproryAXuLSht_2udo3HGGDKAKFALhODof8TkeZ-OgglHMGy9h6QcczdvbAgfipqFT3XtPRjQQeLg&lib=MB9f8F12ii9SeLPyquqIsWGJ2sSl5ARWK'; // ★★★ デプロイ済みのGAS APIのURLに置き換えてください ★★★
+  const API_URL = 'https://script.google.com/macros/s/AKfycbwi0NXAZ_doCj7I7KuU0hk4wO65m4XcuGXotM795E1sXNjs5yC_HwxbEG4bemgzfd1a/exec'; // ★★★ GAS API のデプロイURL ★★★
 
   function formatDate(timestamp) {
     const d = new Date(timestamp);
-    if (isNaN(d.getTime())) return timestamp;
     return `${d.getMonth()+1}/${d.getDate()} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`;
   }
 
@@ -217,16 +101,14 @@
   }
 
   function loadArchive() {
-    // JSONPでデータを取得
     const script = document.createElement('script');
     script.src = API_URL + '?callback=handleArchiveData';
     document.body.appendChild(script);
-    // 古いスクリプトタグを削除（大量に増えるのを防ぐ）
     setTimeout(() => script.remove(), 1000);
   }
 
   loadArchive();
-  setInterval(loadArchive, 45000); // 45秒ごとに更新
+  setInterval(loadArchive, 45000);
 </script>
 </body>
 </html>
