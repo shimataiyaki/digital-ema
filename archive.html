@@ -4,10 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
   <title>奉納アーカイブ｜デジタル絵馬</title>
-  <!-- ファビコン -->
   <link rel="icon" type="image/x-icon" href="https://shimataiyaki.github.io/images/favicon.ico">
   <style>
-    /* ===== インラインCSS（外部依存なし）===== */
     * {
       margin: 0;
       padding: 0;
@@ -99,15 +97,9 @@
       transition: all 0.3s;
     }
 
-    .menu-toggle.active span:nth-child(1) {
-      transform: rotate(45deg) translate(5px, 5px);
-    }
-    .menu-toggle.active span:nth-child(2) {
-      opacity: 0;
-    }
-    .menu-toggle.active span:nth-child(3) {
-      transform: rotate(-45deg) translate(6px, -7px);
-    }
+    .menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+    .menu-toggle.active span:nth-child(2) { opacity: 0; }
+    .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(6px,-7px); }
 
     .nav-menu {
       display: none;
@@ -123,9 +115,7 @@
       z-index: 999;
     }
 
-    .nav-menu.show {
-      display: block;
-    }
+    .nav-menu.show { display: block; }
 
     .nav-menu-inner {
       max-width: 1200px;
@@ -136,9 +126,7 @@
       gap: 0.75rem;
     }
 
-    .nav-menu li {
-      list-style: none;
-    }
+    .nav-menu li { list-style: none; }
 
     .nav-menu a {
       font-family: '游明朝', 'Yu Mincho', serif;
@@ -171,16 +159,7 @@
       width: calc(100% - 3rem);
     }
 
-    h1 {
-      font-family: '游明朝', serif;
-      font-size: clamp(1.6rem, 4vw, 2.2rem);
-      font-weight: 500;
-      text-align: center;
-      margin: 1.2rem 0 1.5rem;
-      color: var(--accent-color);
-    }
-
-    /* ===== 絵馬グリッド（横スクロール防止＆自己完結型）===== */
+    /* ===== 絵馬グリッド ===== */
     .ema-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -205,7 +184,7 @@
       justify-content: center;
       align-items: center;
       text-align: center;
-      padding: 16px 12px;
+      padding: 28px 12px 20px;
       color: var(--text-color);
       height: 100%;
       width: 100%;
@@ -214,31 +193,28 @@
     }
 
     .nickname {
-      font-size: clamp(12px, 2vw, 16px);
+      font-size: 16px;
       color: var(--accent-color);
       background: transparent;
       padding: 0;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
       border-bottom: 1px solid var(--accent-color);
       max-width: 100%;
+      white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      white-space: nowrap;
     }
 
     .wish {
-      font-size: clamp(18px, 2.5vw, 26px);
+      font-size: 26px;
       font-weight: 600;
       line-height: 1.3;
       background: transparent;
       padding: 0;
       max-width: 100%;
+      white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      white-space: normal;
     }
 
     .ema-time {
@@ -266,7 +242,6 @@
       margin-top: 2rem;
     }
 
-    /* ===== レスポンシブ ===== */
     @media screen and (max-width: 800px) {
       .site-title { font-size: 1.3rem; }
       .site-subtitle { font-size: 0.8rem; }
@@ -286,14 +261,14 @@
         gap: 16px;
         padding: 0 16px;
       }
-      .nickname { font-size: 16px; margin-bottom: 6px; }
-      .wish { font-size: 22px; -webkit-line-clamp: 4; }
-      .ema-card { padding: 12px 8px; }
+      .nickname { font-size: 16px; }
+      .wish { font-size: 22px; }
+      .ema-card { padding: 24px 8px 12px; }
     }
 
     @media screen and (max-width: 400px) {
-      .wish { font-size: 18px; }
       .nickname { font-size: 14px; }
+      .wish { font-size: 18px; }
     }
   </style>
 </head>
@@ -302,17 +277,15 @@
 <header class="site-header">
   <div class="header-container">
     <div class="site-title-wrapper">
-      <a href="./" class="site-title">デジタル絵馬</a>
+      <a href="./" class="site-title">奉納アーカイブ</a> <!-- ★ヘッダー名を変更★ -->
       <span class="site-subtitle">E-MAs-archive</span>
     </div>
     <button class="menu-toggle" id="menuToggle" aria-label="メニュー" aria-expanded="false">
-      <span></span>
-      <span></span>
-      <span></span>
+      <span></span><span></span><span></span>
     </button>
     <ul class="nav-menu" id="navMenu">
       <div class="nav-menu-inner">
-        <li><a href="YOUR_E-MAS_MAIN_URL">トップ</a></li>
+        <li><a href="https://shimataiyaki.github.io/e-mas/">トップ</a></li>
         <li><a href="https://note.com/shimataiyaki" target="_blank" rel="noopener">note</a></li>
         <li><a href="https://github.com/shimataiyaki/e-mas" target="_blank" rel="noopener">GitHub</a></li>
       </div>
@@ -320,10 +293,10 @@
   </div>
 </header>
 
-<div class="notification-banner">過去の想いを一覧でご覧いただけます</div>
+<div class="notification-banner">奉納された想いを一覧でご覧いただけます</div>
 
 <main class="archive-container">
-  <h1>奉納アーカイブ</h1>
+  <!-- ★ <h1>奉納アーカイブ</h1> は削除 ★ -->
   <div class="ema-grid" id="archiveGrid"></div>
 </main>
 
@@ -332,10 +305,8 @@
 </footer>
 
 <script>
-  // ===== ハンバーガーメニュー =====
   const toggleBtn = document.getElementById('menuToggle');
   const navMenu = document.getElementById('navMenu');
-
   toggleBtn.addEventListener('click', function() {
     navMenu.classList.toggle('show');
     this.classList.toggle('active');
@@ -372,7 +343,7 @@
 
       const nicknameDiv = document.createElement('div');
       nicknameDiv.className = 'nickname';
-      nicknameDiv.textContent = (item.nickname || '匿名') + ' さんの想い';
+      nicknameDiv.textContent = item.nickname || '匿名';
 
       const wishDiv = document.createElement('div');
       wishDiv.className = 'wish';
