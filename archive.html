@@ -4,17 +4,305 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
   <title>奉納アーカイブ｜デジタル絵馬</title>
-  <!-- 同リポジトリ内のCSS -->
-  <link rel="stylesheet" href="style.css">
   <!-- ファビコン -->
   <link rel="icon" type="image/x-icon" href="https://shimataiyaki.github.io/images/favicon.ico">
+  <style>
+    /* ===== インラインCSS（外部依存なし）===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-color: #ffffff;
+      --text-color: #1f2937;
+      --border-color: #e2e8f0;
+      --muted-text: #64748b;
+      --accent-color: #ad241f;
+    }
+
+    body {
+      font-family: '游明朝', 'Yu Mincho', 'Hiragino Mincho ProN', serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      padding-top: 5rem;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ===== 固定ヘッダー ===== */
+    .site-header {
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: var(--bg-color);
+      border-bottom: 3px solid var(--accent-color);
+      z-index: 1000;
+    }
+
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .site-title-wrapper {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+    }
+
+    .site-title {
+      font-family: '游明朝', 'Yu Mincho', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: #0f172a;
+      text-decoration: none;
+    }
+
+    .site-title:hover {
+      color: var(--accent-color);
+    }
+
+    .site-subtitle {
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      color: var(--muted-text);
+      font-weight: 400;
+    }
+
+    .menu-toggle {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      width: 32px;
+      height: 28px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .menu-toggle span {
+      width: 100%;
+      height: 3px;
+      background: var(--accent-color);
+      transition: all 0.3s;
+    }
+
+    .menu-toggle.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .menu-toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .menu-toggle.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(6px, -7px);
+    }
+
+    .nav-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background: var(--bg-color);
+      border-bottom: 1px solid var(--border-color);
+      padding: 1.5rem 0;
+      margin: 0;
+      list-style: none;
+      z-index: 999;
+    }
+
+    .nav-menu.show {
+      display: block;
+    }
+
+    .nav-menu-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .nav-menu li {
+      list-style: none;
+    }
+
+    .nav-menu a {
+      font-family: '游明朝', 'Yu Mincho', serif;
+      text-decoration: none;
+      color: var(--text-color);
+      font-weight: 500;
+      font-size: 1.1rem;
+      padding: 0.2rem 0;
+      display: inline-block;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .nav-menu a:hover {
+      color: var(--accent-color);
+      border-bottom-color: var(--accent-color);
+    }
+
+    /* ===== 通知バナー ===== */
+    .notification-banner {
+      background: transparent;
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.75rem 1.5rem;
+      margin: 1rem 1.5rem 0;
+      font-size: 1rem;
+      color: var(--text-color);
+      max-width: 1600px;
+      margin-left: auto;
+      margin-right: auto;
+      width: calc(100% - 3rem);
+    }
+
+    h1 {
+      font-family: '游明朝', serif;
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 500;
+      text-align: center;
+      margin: 1.2rem 0 1.5rem;
+      color: var(--accent-color);
+    }
+
+    /* ===== 絵馬グリッド（横スクロール防止＆自己完結型）===== */
+    .ema-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      grid-auto-rows: 1fr;
+      gap: 20px;
+      max-width: 100%;
+      margin: 20px auto;
+      padding: 0 20px;
+      flex: 1;
+    }
+
+    .ema-card {
+      background-color: transparent;
+      background-image: url('https://shimataiyaki.github.io/images/ema-card.jpg');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: top center;
+      border: none;
+      box-shadow: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 16px 12px;
+      color: var(--text-color);
+      height: 100%;
+      width: 100%;
+      aspect-ratio: 3 / 2;
+      overflow: hidden;
+    }
+
+    .nickname {
+      font-size: clamp(12px, 2vw, 16px);
+      color: var(--accent-color);
+      background: transparent;
+      padding: 0;
+      margin-bottom: 8px;
+      border-bottom: 1px solid var(--accent-color);
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .wish {
+      font-size: clamp(18px, 2.5vw, 26px);
+      font-weight: 600;
+      line-height: 1.3;
+      background: transparent;
+      padding: 0;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      white-space: normal;
+    }
+
+    .ema-time {
+      font-size: clamp(11px, 1.5vw, 14px);
+      color: var(--muted-text);
+      margin-top: auto;
+      padding-top: 4px;
+    }
+
+    .empty-message {
+      text-align: center;
+      font-size: 1.2rem;
+      color: var(--muted-text);
+      padding: 3rem;
+      grid-column: span 5;
+    }
+
+    /* ===== フッター ===== */
+    .site-footer {
+      text-align: center;
+      padding: 1.5rem;
+      color: var(--muted-text);
+      font-size: 0.9rem;
+      border-top: 1px solid var(--border-color);
+      margin-top: 2rem;
+    }
+
+    /* ===== レスポンシブ ===== */
+    @media screen and (max-width: 800px) {
+      .site-title { font-size: 1.3rem; }
+      .site-subtitle { font-size: 0.8rem; }
+    }
+
+    @media screen and (max-width: 600px) {
+      body { padding-top: 4.5rem; }
+      .header-container { padding: 0.5rem 1rem; }
+      .notification-banner {
+        margin: 0.75rem 1rem;
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+        width: calc(100% - 2rem);
+      }
+      .ema-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        padding: 0 16px;
+      }
+      .nickname { font-size: 16px; margin-bottom: 6px; }
+      .wish { font-size: 22px; -webkit-line-clamp: 4; }
+      .ema-card { padding: 12px 8px; }
+    }
+
+    @media screen and (max-width: 400px) {
+      .wish { font-size: 18px; }
+      .nickname { font-size: 14px; }
+    }
+  </style>
 </head>
 <body>
 
 <header class="site-header">
   <div class="header-container">
     <div class="site-title-wrapper">
-      <a href="./" class="site-title">奉納アーカイブ</a>
+      <a href="./" class="site-title">デジタル絵馬</a>
       <span class="site-subtitle">E-MAs-archive</span>
     </div>
     <button class="menu-toggle" id="menuToggle" aria-label="メニュー" aria-expanded="false">
@@ -35,6 +323,7 @@
 <div class="notification-banner">過去の想いを一覧でご覧いただけます</div>
 
 <main class="archive-container">
+  <h1>奉納アーカイブ</h1>
   <div class="ema-grid" id="archiveGrid"></div>
 </main>
 
@@ -61,7 +350,7 @@
   });
 
   // ===== データ取得と表示（JSONP）=====
-  const API_URL = 'https://script.google.com/macros/s/AKfycbwi0NXAZ_doCj7I7KuU0hk4wO65m4XcuGXotM795E1sXNjs5yC_HwxbEG4bemgzfd1a/exec'; // ★★★ GAS API のデプロイURL ★★★
+  const API_URL = 'YOUR_GAS_API_URL'; // ★★★ GAS API のデプロイURL ★★★
 
   function formatDate(timestamp) {
     const d = new Date(timestamp);
