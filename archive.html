@@ -30,6 +30,7 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      overflow-x: hidden;
     }
 
     /* ===== 固定ヘッダー ===== */
@@ -171,6 +172,7 @@
       flex: 1;
     }
 
+    /* ===== 絵馬カード ===== */
     .ema-card {
       background-color: transparent;
       background-image: url('https://shimataiyaki.github.io/images/ema-card.jpg');
@@ -186,35 +188,44 @@
       text-align: center;
       padding: 28px 12px 20px;
       color: var(--text-color);
-      height: 100%;
       width: 100%;
       aspect-ratio: 3 / 2;
       overflow: hidden;
     }
 
+    /* ニックネーム：最大2行、自然な折り返し */
     .nickname {
-      font-size: 16px;
+      font-size: clamp(12px, 2vw, 16px);
       color: var(--accent-color);
       background: transparent;
       padding: 0;
       margin-bottom: 12px;
       border-bottom: 1px solid var(--accent-color);
       max-width: 100%;
-      white-space: nowrap;
+      white-space: normal;
+      overflow-wrap: break-word;
+      word-break: normal;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
       overflow: hidden;
-      text-overflow: ellipsis;
     }
 
+    /* 想い本文：最大3行、自然な折り返し */
     .wish {
-      font-size: 26px;
+      font-size: clamp(18px, 2.5vw, 26px);
       font-weight: 600;
-      line-height: 1.3;
+      line-height: 1.4;
       background: transparent;
       padding: 0;
       max-width: 100%;
-      white-space: nowrap;
+      white-space: normal;
+      overflow-wrap: break-word;
+      word-break: normal;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
       overflow: hidden;
-      text-overflow: ellipsis;
     }
 
     .ema-time {
@@ -261,8 +272,8 @@
         gap: 16px;
         padding: 0 16px;
       }
-      .nickname { font-size: 16px; }
-      .wish { font-size: 22px; }
+      .nickname { -webkit-line-clamp: 2; }
+      .wish { font-size: 22px; -webkit-line-clamp: 4; }
       .ema-card { padding: 24px 8px 12px; }
     }
 
@@ -277,7 +288,7 @@
 <header class="site-header">
   <div class="header-container">
     <div class="site-title-wrapper">
-      <a href="./" class="site-title">奉納アーカイブ</a> <!-- ★ヘッダー名を変更★ -->
+      <a href="./" class="site-title">奉納アーカイブ</a>
       <span class="site-subtitle">E-MAs-archive</span>
     </div>
     <button class="menu-toggle" id="menuToggle" aria-label="メニュー" aria-expanded="false">
@@ -285,7 +296,7 @@
     </button>
     <ul class="nav-menu" id="navMenu">
       <div class="nav-menu-inner">
-        <li><a href="https://shimataiyaki.github.io/e-mas/">トップ</a></li>
+        <li><a href=".">トップ</a></li>
         <li><a href="https://note.com/shimataiyaki" target="_blank" rel="noopener">note</a></li>
         <li><a href="https://github.com/shimataiyaki/e-mas" target="_blank" rel="noopener">GitHub</a></li>
       </div>
@@ -296,7 +307,6 @@
 <div class="notification-banner">奉納された想いを一覧でご覧いただけます</div>
 
 <main class="archive-container">
-  <!-- ★ <h1>奉納アーカイブ</h1> は削除 ★ -->
   <div class="ema-grid" id="archiveGrid"></div>
 </main>
 
