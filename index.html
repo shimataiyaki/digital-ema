@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>デジタル絵馬 | E-MAs</title>
+  <link rel="icon" type="image/x-icon" href="https://shimataiyaki.github.io/images/favicon.ico">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-color: #ffffff;
+      --text-color: #1f2937;
+      --border-color: #e2e8f0;
+      --muted-text: #64748b;
+      --accent-color: #ad241f;
+    }
+
+    body {
+      font-family: '游明朝', 'Yu Mincho', 'Hiragino Mincho ProN', serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      padding-top: 5rem;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ===== 固定ヘッダー ===== */
+    .site-header {
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: var(--bg-color);
+      border-bottom: 3px solid var(--accent-color);
+      z-index: 1000;
+    }
+
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .site-title-wrapper {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+    }
+
+    .site-title {
+      font-family: '游明朝', 'Yu Mincho', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: #0f172a;
+      text-decoration: none;
+    }
+
+    .site-title:hover {
+      color: var(--accent-color);
+    }
+
+    .site-subtitle {
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      color: var(--muted-text);
+      font-weight: 400;
+    }
+
+    .menu-toggle {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      width: 32px;
+      height: 28px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .menu-toggle span {
+      width: 100%;
+      height: 3px;
+      background: var(--accent-color);
+      transition: all 0.3s;
+    }
+
+    .menu-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .menu-toggle.active span:nth-child(2) { opacity: 0; }
+    .menu-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -7px); }
+
+    .nav-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background: var(--bg-color);
+      border-bottom: 1px solid var(--border-color);
+      padding: 1.5rem 0;
+      margin: 0;
+      list-style: none;
+      z-index: 999;
+    }
+
+    .nav-menu.show { display: block; }
+
+    .nav-menu-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .nav-menu li { list-style: none; }
+
+    .nav-menu a {
+      font-family: '游明朝', 'Yu Mincho', serif;
+      text-decoration: none;
+      color: var(--text-color);
+      font-weight: 500;
+      font-size: 1.1rem;
+      padding: 0.2rem 0;
+      display: inline-block;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .nav-menu a:hover {
+      color: var(--accent-color);
+      border-bottom-color: var(--accent-color);
+    }
+
+    /* ===== 通知バナー ===== */
+    .notification-banner {
+      background: transparent;
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.75rem 1.5rem;
+      margin: 1rem 1.5rem 0;
+      font-size: 1rem;
+      color: var(--text-color);
+      max-width: 1600px;
+      margin-left: auto;
+      margin-right: auto;
+      width: calc(100% - 3rem);
+      transition: opacity 0.4s;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ===== 絵馬グリッド ===== */
+    .ema-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      grid-auto-rows: 1fr;
+      gap: 20px;
+      max-width: 100%;
+      margin: 20px auto;
+      padding: 0 20px;
+      flex: 1;
+    }
+
+    .ema-card {
+      background-color: transparent;
+      background-image: url('https://shimataiyaki.github.io/images/ema-card.jpg');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: top center;
+      border: none;
+      box-shadow: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 28px 12px 20px;
+      color: var(--text-color);
+      width: 100%;
+      aspect-ratio: 3 / 2;
+      overflow: hidden;
+    }
+
+    .nickname {
+      font-size: clamp(12px, 2vw, 16px);
+      color: var(--accent-color);
+      background: transparent;
+      padding: 0;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--accent-color);
+      max-width: 100%;
+      white-space: normal;
+      overflow-wrap: break-word;
+      word-break: normal;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .wish {
+      font-size: clamp(18px, 2.5vw, 26px);
+      font-weight: 600;
+      line-height: 1.4;
+      background: transparent;
+      padding: 0;
+      max-width: 100%;
+      white-space: normal;
+      overflow-wrap: break-word;
+      word-break: normal;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .ema-card.placeholder { opacity: 0.4; }
+
+    /* ===== フッター ===== */
+    .site-footer {
+      text-align: center;
+      padding: 1.5rem;
+      color: var(--muted-text);
+      font-size: 0.9rem;
+      border-top: 1px solid var(--border-color);
+      margin-top: 2rem;
+    }
+
+    /* ===== レスポンシブ ===== */
+    @media screen and (max-width: 800px) {
+      .site-title { font-size: 1.3rem; }
+      .site-subtitle { font-size: 0.8rem; }
+    }
+
+    @media screen and (max-width: 600px) {
+      body { padding-top: 4.5rem; }
+      .header-container { padding: 0.5rem 1rem; }
+      .notification-banner {
+        margin: 0.75rem 1rem;
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+        width: calc(100% - 2rem);
+      }
+      .ema-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        padding: 0 16px;
+      }
+      .nickname { font-size: 16px; margin-bottom: 6px; }
+      .wish { font-size: 22px; -webkit-line-clamp: 4; }
+      .ema-card { padding: 24px 8px 12px; }
+    }
+
+    @media screen and (max-width: 400px) {
+      .nickname { font-size: 14px; }
+      .wish { font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-container">
+    <div class="site-title-wrapper">
+      <a href="./" class="site-title">デジタル絵馬</a>
+      <span class="site-subtitle">e-mas</span>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="メニュー" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-menu" id="navMenu">
+      <div class="nav-menu-inner">
+        <li><a href="archive.html" target="_blank">奉納アーカイブ</a></li>
+        <li><a href="https://note.com/shimataiyaki" target="_blank" rel="noopener">note</a></li>
+        <li><a href="https://github.com/Shimataiyaki/e-mas" target="_blank" rel="noopener">GitHub</a></li>
+      </div>
+    </ul>
+  </div>
+</header>
+
+<div class="notification-banner" id="notification">奉納をお待ちしています</div>
+
+<div class="ema-grid" id="emaGrid"></div>
+
+<footer class="site-footer">
+  © 2026 Shimataiyaki
+</footer>
+
+<script>
+  // ===== ハンバーガーメニュー =====
+  const toggleBtn = document.getElementById('menuToggle');
+  const navMenu = document.getElementById('navMenu');
+  toggleBtn.addEventListener('click', function() {
+    navMenu.classList.toggle('show');
+    this.classList.toggle('active');
+    this.setAttribute('aria-expanded', navMenu.classList.contains('show'));
+  });
+  document.addEventListener('click', function(e) {
+    if (!toggleBtn.contains(e.target) && !navMenu.contains(e.target)) {
+      navMenu.classList.remove('show');
+      toggleBtn.classList.remove('active');
+      toggleBtn.setAttribute('aria-expanded', 'false');
+    }
+  });
+  navMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navMenu.classList.remove('show');
+      toggleBtn.classList.remove('active');
+      toggleBtn.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // ===== API呼び出し設定 =====
+  const API_URL = 'https://script.google.com/macros/s/AKfycbxdlsuwqo6uX8n_-zbYv-JFreS0w0w720FUxshtGNazav_4nxqUvAKTm-sEsK2NLw1ieQ/exec'; // ★ GAS APIのデプロイURL
+  const NOTIFICATION_DURATION = 8000;
+  let notificationTimer = null;
+
+  // ===== 通知表示 =====
+  function showNotification(nicknames) {
+    const notif = document.getElementById('notification');
+    if (!nicknames || nicknames.length === 0) return;
+    const limited = nicknames.slice(0, 5);
+    const isMobile = window.innerWidth <= 600;
+    const maxLen = isMobile ? 3 : 5;
+    const trimmed = limited.map(name => name.length > maxLen ? name.substring(0, maxLen) + '…' : name);
+    let message = '';
+    if (trimmed.length === 1) {
+      message = `${trimmed[0]} さんの想いが奉納されました`;
+    } else {
+      message = `${trimmed.map(name => name + 'さん').join(' ')} の想いが奉納されました`;
+    }
+    notif.textContent = message;
+    notif.style.opacity = '1';
+    if (notificationTimer) clearTimeout(notificationTimer);
+    notificationTimer = setTimeout(() => notif.style.opacity = '0.7', NOTIFICATION_DURATION);
+  }
+
+  // ===== 通知データ受け取り =====
+  function handleNotification(data) {
+    showNotification(data);
+  }
+
+  // ===== 絵馬グリッド描画 =====
+  function handleMainData(wishes) {
+    const grid = document.getElementById('emaGrid');
+    grid.innerHTML = '';
+    if (!wishes || wishes.length === 0) {
+      for (let i = 0; i < 15; i++) {
+        const card = document.createElement('div');
+        card.className = 'ema-card placeholder';
+        card.innerHTML = '<div class="nickname">---</div><div class="wish">奉納をお待ちしています</div>';
+        grid.appendChild(card);
+      }
+      return;
+    }
+    wishes.slice(0, 15).forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'ema-card';
+      card.innerHTML = `<div class="nickname">${item.nickname || '匿名'}</div><div class="wish">${item.wish}</div>`;
+      grid.appendChild(card);
+    });
+    for (let i = wishes.length; i < 15; i++) {
+      const card = document.createElement('div');
+      card.className = 'ema-card placeholder';
+      card.innerHTML = '<div class="nickname">---</div><div class="wish">奉納をお待ちしています</div>';
+      grid.appendChild(card);
+    }
+  }
+
+  // ===== JSONP通信 =====
+  function jsonp(url, callback) {
+    const script = document.createElement('script');
+    script.src = url;
+    document.body.appendChild(script);
+    setTimeout(() => script.remove(), 1000);
+  }
+
+  function loadMainData() {
+    jsonp(API_URL + '?callback=handleMainData');
+  }
+
+  function loadNotification() {
+    jsonp(API_URL + '?type=notification&callback=handleNotification');
+  }
+
+  // ===== 初期化と定期更新 =====
+  loadMainData();
+  loadNotification();
+  setInterval(loadMainData, 30000);   // 30秒ごとにグリッド更新
+  setInterval(loadNotification, 20000); // 20秒ごとに新着通知
+</script>
+</body>
+</html>
