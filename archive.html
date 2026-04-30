@@ -193,6 +193,11 @@
       overflow: hidden;
     }
 
+    /* 読み込み中のプレースホルダー */
+    .ema-card.placeholder {
+      opacity: 0.4;
+    }
+
     /* ニックネーム：最大2行、自然な折り返し */
     .nickname {
       font-size: clamp(12px, 2vw, 16px);
@@ -288,7 +293,7 @@
 <header class="site-header">
   <div class="header-container">
     <div class="site-title-wrapper">
-      <a href="./" class="site-title">奉納アーカイブ</a>
+      <a href="./archive.html" class="site-title">奉納アーカイブ</a>
       <span class="site-subtitle">E-MAs-archive</span>
     </div>
     <button class="menu-toggle" id="menuToggle" aria-label="メニュー" aria-expanded="false">
@@ -296,7 +301,7 @@
     </button>
     <ul class="nav-menu" id="navMenu">
       <div class="nav-menu-inner">
-        <li><a href=".">トップ</a></li>
+        <li><a href="./">トップ</a></li>
         <li><a href="https://note.com/shimataiyaki" target="_blank" rel="noopener">note</a></li>
         <li><a href="https://github.com/shimataiyaki/e-mas" target="_blank" rel="noopener">GitHub</a></li>
       </div>
@@ -304,10 +309,27 @@
   </div>
 </header>
 
-<div class="notification-banner">奉納された想いを一覧でご覧いただけます</div>
+<div class="notification-banner">過去の想いを一覧でご覧いただけます</div>
 
 <main class="archive-container">
-  <div class="ema-grid" id="archiveGrid"></div>
+  <div class="ema-grid" id="archiveGrid">
+    <!-- ★ 読み込み中に表示するプレースホルダー 15枚 ★ -->
+    <div class="ema-card placeholder"><div class="nickname">---</div><div class="wish">奉納をお待ちしています</div></div>
+    <div class="ema-card placeholder"><div class="nickname">---</div><div class="wish">奉納をお待ちしています</div></div>
+    <div class="ema-card placeholder"><div class="nickname">---</div><div class="wish">奉納をお待ちしています</div></div>
+    <div class="ema-card placeholder"><div class="nickname">---</div><div class="wish">奉納をお待ちしています</div></div>
+    <div class="ema-card placeholder"><div class="nickname">---</div><div class="wish">奉納をお待ちしています</div></div>
+    <div class="ema-card placeholder"><div class="nickname">---</div><div class="wish">奉納をお待ちしています</div></div>
+    <div class="ema-card placeholder"><div class="nickname">---</div><div class="wish">奉納をお待ちしています</div></div>
+    <div class="ema-card placeholder"><div class="nickname">---</div><div class="wish">奉納をお待ちしています</div></div>
+    <div class="ema-card placeholder"><div class="nickname">---</div><div class="wish">奉納をお待ちしています</div></div>
+    <div class="ema-card placeholder"><div class="nickname">---</div><div class="wish">奉納をお待ちしています</div></div>
+    <div class="ema-card placeholder"><div class="nickname">---</div><div class="wish">奉納をお待ちしています</div></div>
+    <div class="ema-card placeholder"><div class="nickname">---</div><div class="wish">奉納をお待ちしています</div></div>
+    <div class="ema-card placeholder"><div class="nickname">---</div><div class="wish">奉納をお待ちしています</div></div>
+    <div class="ema-card placeholder"><div class="nickname">---</div><div class="wish">奉納をお待ちしています</div></div>
+    <div class="ema-card placeholder"><div class="nickname">---</div><div class="wish">奉納をお待ちしています</div></div>
+  </div>
 </main>
 
 <footer class="site-footer">
