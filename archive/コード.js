@@ -1,4 +1,4 @@
-// ★★★ スプレッドシートID ★★★
+// ★★★ 本番環境のスプレッドシートIDに差し替えてください。★★★
 var SPREADSHEET_ID = 'XXXXXXXXXXXXXXX';
 var SHEET_NAME = 'フォームの回答 1';
 
