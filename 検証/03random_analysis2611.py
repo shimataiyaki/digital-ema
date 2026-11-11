@@ -1,0 +1,25 @@
+# -------------------------
+# 待ち時間分布のヒストグラム用CSV（度数分布表）の作成
+# -------------------------
+
+# 20秒刻みの階級（ビン）を設定
+max_wait_val = int(np.ceil(df_all_waits["初回表示待ち時間_秒"].max()))
+bin_size = 20
+bins = list(range(0, max(1500, max_wait_val + bin_size), bin_size))
+
+# 度数分布（ヒストグラム用データ）の計算
+counts, bin_edges = np.histogram(df_all_waits["初回表示待ち時間_秒"], bins=bins)
+
+histogram_df = pd.DataFrame({
+    "階級_開始_秒": bin_edges[:-1],
+    "階級_終了_秒": bin_edges[1:],
+    "階級表示": [f"{int(bin_edges[i])}-{int(bin_edges[i+1])}秒" for i in range(len(counts))],
+    "度数_件数": counts,
+    "割合_%": (counts / len(df_all_waits)) * 100,
+    "累積度数": np.cumsum(counts),
+    "累積割合_%": np.cumsum(counts / len(df_all_waits)) * 100
+})
+
+# CSVファイルに出力＆ダウンロード
+histogram_df.to_csv("wait_time_histogram_distribution.csv", index=False, encoding="utf-8-sig")
+files.download("wait_time_histogram_distribution.csv")
